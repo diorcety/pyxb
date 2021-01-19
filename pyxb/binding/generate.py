@@ -583,11 +583,15 @@ def elementDeclarationMap (ed, binding_module, **kw):
         template_map['nillable'] = binding_module.literal(ed.nillable(), **kw)
     if ed.default():
         template_map['defaultValue'] = binding_module.literal(ed.default(), **kw)
+    if isinstance(ed.owner(), xs.structures.Particle):
+        owner = ed.owner()
+        template_map['minOccurs'] = binding_module.literal(owner.minOccurs(), **kw)
+        template_map['maxOccurs'] = binding_module.literal(owner.maxOccurs(), **kw)
     template_map['typeDefinition'] = binding_module.literal(ed.typeDefinition(), **kw)
     if ed.substitutionGroupAffiliation():
         template_map['substitution_group'] = binding_module.literal(ed.substitutionGroupAffiliation(), **kw)
     aux_init = []
-    for k in ( 'nillable', 'abstract', 'scope', 'documentation' ):
+    for k in ( 'nillable', 'abstract', 'scope', 'documentation', 'minOccurs', 'maxOccurs' ):
         if k in template_map:
             aux_init.append('%s=%s' % (k, template_map[k]))
     aux_init.append('location=%s' % (template_map['decl_location'],))

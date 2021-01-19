@@ -1517,6 +1517,16 @@ class element (utility._DeconflictSymbols_mixin, _DynamicCreate_mixin):
         return self.__defaultValue
     __defaultValue = None
 
+    def minOccurs (self):
+        """Indicate this element is minimum occurrence."""
+        return self.__minOccurs
+    __minOccurs = 1
+
+    def maxOccurs (self):
+        """Indicate this element is maximum occurrence."""
+        return self.__maxOccurs
+    __maxOccurs = 1
+
     def fixed (self):
         """C{True} if the element content cannot be changed"""
         return self.__fixed
@@ -1578,7 +1588,7 @@ class element (utility._DeconflictSymbols_mixin, _DynamicCreate_mixin):
         The type for this element must be a complex type definition."""
         return self.typeDefinition()._UseForTag(name).elementBinding()
 
-    def __init__ (self, name, type_definition, scope=None, nillable=False, abstract=False, unicode_default=None, fixed=False, substitution_group=None, documentation=None, location=None):
+    def __init__ (self, name, type_definition, scope=None, nillable=False, abstract=False, unicode_default=None, fixed=False, substitution_group=None, documentation=None, location=None, minOccurs=1, maxOccurs=1):
         """Create a new element binding.
         """
         assert isinstance(name, pyxb.namespace.ExpandedName)
@@ -1594,6 +1604,8 @@ class element (utility._DeconflictSymbols_mixin, _DynamicCreate_mixin):
             if isinstance(self.__defaultValue, complexTypeDefinition):
                 self.__defaultValue = self.__defaultValue.value()
         self.__fixed = fixed
+        self.__minOccurs = minOccurs
+        self.__maxOccurs = maxOccurs
         self.__substitutionGroup = substitution_group
         self.__documentation = documentation
         self.__xsdLocation = location
